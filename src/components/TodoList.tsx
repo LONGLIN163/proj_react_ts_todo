@@ -9,10 +9,19 @@ interface Props {
     setTodos:React.Dispatch<React.SetStateAction<Todo[]>>;
     completedTodos:Todo[];
     setCompletedTodos:React.Dispatch<React.SetStateAction<Todo[]>>;
+    inprogressTodos:Todo[];
+    setInprogressTodos:React.Dispatch<React.SetStateAction<Todo[]>>;
 }
 
 
-const TodoList = ({todos,setTodos,completedTodos,setCompletedTodos}:Props) => {
+const TodoList = ({ 
+  todos,
+  setTodos,
+  inprogressTodos,
+  setInprogressTodos,
+  completedTodos,
+  setCompletedTodos
+}:Props) => {
   return (
     <div className="container">
 
@@ -20,12 +29,12 @@ const TodoList = ({todos,setTodos,completedTodos,setCompletedTodos}:Props) => {
         {
           (provided,snapshot)=>(
             <div 
-              className={`todos ${snapshot.isDraggingOver?"draggactive":""}`} 
+              className={`todos ${ snapshot.isDraggingOver ? "draggactive" : "" }`} 
               ref={provided.innerRef} //DND will consider this div is the drappable zone
               {...provided.droppableProps}
             >
               <span className="todos__heading">
-                Active Tasks
+                 Pending Tasks
               </span>
               {
                 todos.map( (todo,index) => (
@@ -44,16 +53,43 @@ const TodoList = ({todos,setTodos,completedTodos,setCompletedTodos}:Props) => {
             </div>
           )
         }
-        
       </Droppable>
 
-      <Droppable droppableId='todosCompleted'>
-
+      <Droppable droppableId='todosInprogress'>
         {
           (provided,snapshot)=>(
             <div 
-              className={`todos remove ${snapshot.isDraggingOver?"draggcomplete":""}`} 
-              ref={provided.innerRef} //DND will consider this div is the drappable zone
+              className={`todos inporgress ${ snapshot.isDraggingOver ? "draggactive" : "" }`} 
+              ref={provided.innerRef}
+              {...provided.droppableProps}
+            >
+              <span className="todos__heading">
+                In Progress
+              </span>
+              {
+                inprogressTodos.map( (todo,index) => (
+                    <TodoItem 
+                        index={index}
+                        todo={todo} 
+                        key={todo.id}
+                        todos={inprogressTodos}
+                        setTodos={setInprogressTodos}
+                    />
+                  )
+                )
+              }
+              {provided.placeholder} 
+            </div>
+          )
+        }
+      </Droppable>
+
+      <Droppable droppableId='todosCompleted'>
+        {
+          (provided,snapshot)=>(
+            <div 
+              className={`todos complete ${ snapshot.isDraggingOver ? "draggactive" : "" }`} 
+              ref={provided.innerRef} 
               {...provided.droppableProps}
             >
               <span className="todos__heading">
@@ -73,11 +109,9 @@ const TodoList = ({todos,setTodos,completedTodos,setCompletedTodos}:Props) => {
               } 
               {provided.placeholder}
             </div>
-        )
-      }
-              
+          )
+        }
       </Droppable>
-
     </div>
   )
 }

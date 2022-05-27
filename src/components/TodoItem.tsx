@@ -17,18 +17,18 @@ const TodoItem = ({index,todo,todos,setTodos}:Props) => {
   const [edit,setEdit]=useState<boolean>(false)
   const [editTodo,setEditTodo]=useState<string>(todo.todo)
 
-  const handleDone = (id:number) => {
-    setTodos(todos.map( (todo) => (
-        todo.id===id 
-        ? 
-        {
-          ...todo,
-          isDone:!todo.isDone
-        } 
-        : todo
-      )
-    ))
-  }
+  // const handleDone = (id:number) => {
+  //   setTodos(todos.map( (todo) => (
+  //       todo.id===id 
+  //       ? 
+  //       {
+  //         ...todo,
+  //         isDone:!todo.isDone
+  //       } 
+  //       : todo
+  //     )
+  //   ))
+  // }
   
   const handleDelete = (id:number) => {
     setTodos(todos.filter( (todo) => (
@@ -118,9 +118,9 @@ const TodoItem = ({index,todo,todos,setTodos}:Props) => {
               <span className="icon">
                 <AiFillDelete onClick={ () => handleDelete(todo.id)} />
               </span>
-              <span className="icon">
+              {/* <span className="icon">
                 <MdDone onClick={ () => handleDone(todo.id)}/>
-              </span>
+              </span> */}
             </div>
             
           </form>

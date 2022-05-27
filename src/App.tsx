@@ -9,6 +9,7 @@ import { DragDropContext, DropResult } from 'react-beautiful-dnd';
 const App:React.FC=()=> {
   const [todo,setTodo]=useState<string>("")
   const [todos,setTodos]=useState<Todo[]>([])
+  const [inprogressTodos,setInprogressTodos]=useState<Todo[]>([])
   const [completedTodos,setCompletedTodos]=useState<Todo[]>([])
 
 
@@ -38,28 +39,36 @@ const App:React.FC=()=> {
 
       let draggedTodo,
           tempTodos=todos,// store the todos after rm draggedTodo
-          tempCompleteTodos=completedTodos;
+          tempInprogressTodos=inprogressTodos,
+          tempCompletedTodos=completedTodos;
 
       //remove draggedTodo from the origin position
       if(source.droppableId==="todosList"){
         draggedTodo=tempTodos[source.index];
         tempTodos.splice(source.index, 1) // rm draggedTodo
+      }else if(source.droppableId==="todosInprogress"){
+        draggedTodo=tempInprogressTodos[source.index];
+        tempInprogressTodos.splice(source.index, 1) // rm draggedTodo
       }else{
-        draggedTodo=tempCompleteTodos[source.index];
-        tempCompleteTodos.splice(source.index, 1) // rm draggedTodo
+        draggedTodo=tempCompletedTodos[source.index];
+        tempCompletedTodos.splice(source.index, 1) // rm draggedTodo
       }
 
       //insert draggedTodo to the position of the destination
       if(destination.droppableId==="todosList"){
-        draggedTodo.isDone=true
-        tempTodos.splice(destination.index, 0, draggedTodo)
-      }else{
         draggedTodo.isDone=false
-        tempCompleteTodos.splice(destination.index, 0, draggedTodo)
+        tempTodos.splice(destination.index, 0, draggedTodo)
+      }else if(destination.droppableId==="todosInprogress"){
+        draggedTodo.isDone=false
+        tempInprogressTodos.splice(destination.index, 0, draggedTodo)
+      }else{
+        draggedTodo.isDone=true
+        tempCompletedTodos.splice(destination.index, 0, draggedTodo)
       }
 
       // reset todos and completeTodos
-      setCompletedTodos(tempCompleteTodos)
+      setCompletedTodos(tempCompletedTodos)
+      setInprogressTodos(tempInprogressTodos)
       setTodos(tempTodos)
 
       console.log("todos******",todos)
@@ -81,6 +90,8 @@ const App:React.FC=()=> {
           <TodoList 
             todos={todos}
             setTodos={setTodos}
+            inprogressTodos={inprogressTodos}
+            setInprogressTodos={setInprogressTodos}
             completedTodos={completedTodos}
             setCompletedTodos={setCompletedTodos}
           />

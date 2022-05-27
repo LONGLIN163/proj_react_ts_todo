@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Neucha&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@300&display=swap');
 
 .App {
   width: 100vw;
@@ -7,7 +7,7 @@
   flex-direction: column;
   align-items: center;
   background-color: rgb(43, 131, 226);
-  font-family: 'Neucha', cursive;
+  font-family: 'Oswald', sans-serif;
 }
 
 .heading{
